@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <id>distribution</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+    <files>
+        <file>
+            <source>target/whistle-${project.version}.jar</source>
+            <outputDirectory>/</outputDirectory>
+            <filtered>false</filtered>
+        </file>
+        <file>
+            <source>cli/whistle.cmd</source>
+            <outputDirectory>/</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>cli/whistle.sh</source>
+            <outputDirectory>/</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>LICENSE</source>
+            <outputDirectory>/</outputDirectory>
+            <filtered>false</filtered>
+        </file>
+    </files>
+</assembly>
