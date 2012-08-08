@@ -20,6 +20,7 @@ Running
 -------
 
 To run Whistle extract the distribution and run::
+
 Linux or OS X::
 
   ./whistle.sh --help
