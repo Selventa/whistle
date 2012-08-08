@@ -78,7 +78,7 @@ import com.selventa.whistle.score.service.Scorer;
 import com.selventa.whistle.score.service.Scorer.Prediction;
 
 /**
- * Command line application to perform Reverse Causal Reasoning of a dataset
+ * Command line application to perform Reverse Causal Reasoning of a data set
  * against a given Kam.
  *
  * @author Steve Ungerer
@@ -761,7 +761,8 @@ public class Rcr {
                 DATA_SHORT_OPT,
                 DATA_LONG_OPT,
                 true,
-                "Dataset input file. Must be a valid IdAMP formatted file of a single comparison.");
+                "Data set input file. The file should be in valid IdAMP format.  " +
+                "If more than one comparison is represented you will be prompted to choose one.");
         o.setRequired(true);
         ret.addOption(o);
 
@@ -774,7 +775,7 @@ public class Rcr {
                 NS_URL_SHORT_OPT,
                 NS_URL_LONG_OPT,
                 true,
-                "Resource location URL of the namespace containing all values of the Dataset input file.");
+                "Resource location URL of the namespace containing all values of the data set input file.");
         o.setRequired(true);
         ret.addOption(o);
 
