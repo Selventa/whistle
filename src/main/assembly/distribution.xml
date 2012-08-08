@@ -28,6 +28,12 @@
             <filtered>true</filtered>
         </file>
         <file>
+            <source>config/belframework.cfg</source>
+            <outputDirectory>/config</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>false</filtered>
+        </file>
+        <file>
             <source>LICENSE</source>
             <outputDirectory>/</outputDirectory>
             <filtered>false</filtered>

@@ -2,7 +2,12 @@ package com.selventa.whistle.cli;
 
 import static java.lang.String.format;
 import static java.lang.System.err;
+import static java.lang.System.getenv;
+import static org.openbel.framework.common.BELUtilities.asPath;
+import static org.openbel.framework.common.BELUtilities.hasLength;
+import static org.openbel.framework.common.BELUtilities.noLength;
 import static org.openbel.framework.common.BELUtilities.readable;
+import static org.openbel.framework.common.cfg.SystemConfiguration.createSystemConfiguration;
 import static org.openbel.framework.common.enums.RelationshipType.DECREASES;
 import static org.openbel.framework.common.enums.RelationshipType.INCREASES;
 
@@ -148,6 +153,12 @@ public class Rcr {
     private static final String LICENSE_REJECT = "No";
     private static final String LICENSE_REJECTED_EXIT =
             "License Agreement not accepted.  Whistle will now exit.";
+    
+    // environment constants
+    private static final String ENV_BELFRAMEWORK_HOME = "BELFRAMEWORK_HOME";
+    private static final String WHISTLE_HOME = "WHISTLE_HOME";
+    private static final String CONFIG_DIRECTORY = "config";
+    private static final String BELFRAMEWORK_CONFIG = "belframework.cfg";
 
     // service objects, for custom subclassing override the applicable getters.
     private SystemConfiguration sysCfg;
@@ -819,8 +830,25 @@ public class Rcr {
      * @throws Exception
      */
     protected SystemConfiguration getSystemConfiguration() throws Exception {
-        return sysCfg == null ? SystemConfiguration
-                .createSystemConfiguration(null) : sysCfg;
+        final String bfhome = getenv(ENV_BELFRAMEWORK_HOME);
+        if (hasLength(bfhome)) {
+            sysCfg = createSystemConfiguration(null);
+            return sysCfg;
+        }
+        
+        String whistleHome = getenv(WHISTLE_HOME);
+
+        // assert that WHISTLE_HOME is set, alert the user
+        assert noLength(whistleHome);
+        if (noLength(whistleHome)) {
+            throw new IllegalStateException("WHISTLE_HOME needs to be set.");
+        }
+        
+        String cfgPath = asPath(getenv(WHISTLE_HOME), CONFIG_DIRECTORY,
+                BELFRAMEWORK_CONFIG);
+        
+        sysCfg = createSystemConfiguration(new File(cfgPath));
+        return sysCfg;
     }
 
     /**
