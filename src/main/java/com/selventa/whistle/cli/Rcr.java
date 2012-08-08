@@ -799,7 +799,7 @@ public class Rcr {
                 POP_SIZE_SHORT_OPT,
                 POP_SIZE_LONG_OPT,
                 true,
-                "Population size. Overriding the default calculation based on Kam and namespace"));
+                "Population size. The default is to calculate population based on the data set measurements that exist in the KAM."));
 
         ret.addOption(new Option(DETAIL_LONG_OPT, false,
                 "Output a mapping and mechanism detail file that shows additional information"));
