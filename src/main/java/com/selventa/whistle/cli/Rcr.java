@@ -94,8 +94,8 @@ public class Rcr {
     private static final String DATA_LONG_OPT = "input-file";
     private static final String RUN_NAME_SHORT_OPT = "r";
     private static final String RUN_NAME_LONG_OPT = "run-name";
-    private static final String DIR_SHORT_OPT = "d";
-    private static final String DIR_LONG_OPT = "direction-cutoff";
+    private static final String FOLD_CHANGE_SHORT_OPT = "m";
+    private static final String FOLD_CHANGE_LONG_OPT = "fold-change-cutoff";
     private static final String PVAL_SHORT_OPT = "p";
     private static final String PVAL_LONG_OPT = "p-value-cutoff";
     private static final String ABUN_SHORT_OPT = "a";
@@ -284,7 +284,7 @@ public class Rcr {
     protected boolean validateOptions() {
         boolean valid = true;
         if (commandLine.hasOption(ANLST_SHORT_OPT)) {
-            if (commandLine.hasOption(DIR_SHORT_OPT)) {
+            if (commandLine.hasOption(FOLD_CHANGE_SHORT_OPT)) {
                 System.out
                         .println("WARNING: fold change cutoff specified when using analyst selection. Cutoff will be ignored.");
             }
@@ -297,7 +297,7 @@ public class Rcr {
                         .println("WARNING: abundance cutoff specified when using analyst selection. Cutoff will be ignored.");
             }
         } else {
-            if (!commandLine.hasOption(DIR_SHORT_OPT)
+            if (!commandLine.hasOption(FOLD_CHANGE_SHORT_OPT)
                     || !commandLine.hasOption(PVAL_SHORT_OPT)
                     || !commandLine.hasOption(ABUN_SHORT_OPT)) {
                 System.err
@@ -305,8 +305,8 @@ public class Rcr {
                 valid = false;
             }
         }
-        if (commandLine.hasOption(DIR_SHORT_OPT)
-                && !isDouble(commandLine.getOptionValue(DIR_SHORT_OPT))) {
+        if (commandLine.hasOption(FOLD_CHANGE_SHORT_OPT)
+                && !isDouble(commandLine.getOptionValue(FOLD_CHANGE_SHORT_OPT))) {
             System.err
                     .println("ERROR: Invalid fold change cutoff. Value must be a decimal.");
             valid = false;
@@ -427,7 +427,7 @@ public class Rcr {
         } else {
 
             cutoffs = new Cutoffs(Double.valueOf(commandLine
-                    .getOptionValue(DIR_SHORT_OPT)), Double.valueOf(commandLine
+                    .getOptionValue(FOLD_CHANGE_SHORT_OPT)), Double.valueOf(commandLine
                     .getOptionValue(PVAL_SHORT_OPT)),
                     Double.valueOf(commandLine.getOptionValue(ABUN_SHORT_OPT)));
         }
@@ -781,10 +781,10 @@ public class Rcr {
         ret.addOption(new Option(ANLST_SHORT_OPT, ANLST_LONG_OPT, false,
                 "Use analyst selection to filter Measurements to state changes."));
         ret.addOption(new Option(
-                DIR_SHORT_OPT,
-                DIR_LONG_OPT,
+                FOLD_CHANGE_SHORT_OPT,
+                FOLD_CHANGE_LONG_OPT,
                 true,
-                "Direction cutoff to apply to Measurements for state change generation. Applicable only if not using analyst selection."));
+                "Fold change cutoff to apply to Measurements for state change generation. Applicable only if not using analyst selection."));
         ret.addOption(new Option(
                 PVAL_SHORT_OPT,
                 PVAL_LONG_OPT,
