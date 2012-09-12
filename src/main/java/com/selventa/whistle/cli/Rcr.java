@@ -40,8 +40,8 @@ import org.openbel.framework.api.Kam;
 import org.openbel.framework.api.Kam.KamNode;
 import org.openbel.framework.api.KamDialect;
 import org.openbel.framework.api.KamSpecies;
-import org.openbel.framework.api.KamStore;
-import org.openbel.framework.api.KamStoreImpl;
+import org.openbel.framework.api.KAMStore;
+import org.openbel.framework.api.KAMStoreImpl;
 import org.openbel.framework.common.bel.parser.BELParser;
 import org.openbel.framework.common.cfg.SystemConfiguration;
 import org.openbel.framework.common.model.Namespace;
@@ -55,7 +55,7 @@ import org.openbel.framework.core.df.cache.CacheableResourceService;
 import org.openbel.framework.core.df.cache.DefaultCacheableResourceService;
 import org.openbel.framework.core.df.cache.ResolvedResource;
 import org.openbel.framework.core.df.cache.ResourceType;
-import org.openbel.framework.internal.KAMStoreDaoImpl.BelTerm;
+import org.openbel.framework.api.internal.KAMStoreDaoImpl.BelTerm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -163,7 +163,7 @@ public class Rcr {
     // service objects, for custom subclassing override the applicable getters.
     private SystemConfiguration sysCfg;
     private DatabaseService dbService;
-    private KamStore kamStore;
+    private KAMStore kamStore;
     private CacheableResourceService cacheService;
     private DataFileService dataFileService;
     private MeasurementMappingService mappingService;
@@ -832,7 +832,7 @@ public class Rcr {
     protected SystemConfiguration getSystemConfiguration() throws Exception {
         final String bfhome = getenv(ENV_BELFRAMEWORK_HOME);
         if (hasLength(bfhome)) {
-            sysCfg = createSystemConfiguration(null);
+            sysCfg = createSystemConfiguration();
             return sysCfg;
         }
         
@@ -882,7 +882,7 @@ public class Rcr {
      * @return
      * @throws Exception
      */
-    protected KamStore getKamStore() throws Exception {
+    protected KAMStore getKamStore() throws Exception {
         if (kamStore != null) {
             return kamStore;
         }
@@ -896,7 +896,7 @@ public class Rcr {
         }
         DBConnection dbc = dbService.dbConnection(sysCfg.getKamURL(),
                 sysCfg.getKamUser(), sysCfg.getKamPassword());
-        return new KamStoreImpl(dbc);
+        return new KAMStoreImpl(dbc);
     }
 
     /**
@@ -992,9 +992,9 @@ public class Rcr {
      * @author Steve Ungerer
      */
     private class RcrDialect implements Dialect {
-        private KamStore kamStore;
+        private KAMStore kamStore;
 
-        public RcrDialect(KamStore kamStore) {
+        public RcrDialect(KAMStore kamStore) {
             this.kamStore = kamStore;
         }
 
@@ -1018,5 +1018,4 @@ public class Rcr {
             return label;
         }
     }
-
 }

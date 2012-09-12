@@ -13,14 +13,14 @@ import org.openbel.framework.api.Equivalencer;
 import org.openbel.framework.api.EquivalencerException;
 import org.openbel.framework.api.Kam;
 import org.openbel.framework.api.Kam.KamNode;
-import org.openbel.framework.api.KamStore;
-import org.openbel.framework.api.KamStoreException;
+import org.openbel.framework.api.KAMStore;
+import org.openbel.framework.api.KAMStoreException;
 import org.openbel.framework.common.InvalidArgument;
 import org.openbel.framework.common.enums.FunctionEnum;
 import org.openbel.framework.common.model.Parameter;
 import org.openbel.framework.common.model.Term;
 import org.openbel.framework.common.protonetwork.model.SkinnyUUID;
-import org.openbel.framework.internal.KAMStoreDaoImpl.Namespace;
+import org.openbel.framework.api.internal.KAMStoreDaoImpl.Namespace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +45,7 @@ public class DefaultMeasurementMappingService implements
     private static final Logger logger = LoggerFactory
             .getLogger(DefaultMeasurementMappingService.class);
 
-    private KamStore kamStore;
+    private KAMStore kamStore;
     private CollapsingStrategy collapsingStrategy;
     private Equivalencer equivalencer = new Equivalencer();
 
@@ -97,7 +97,7 @@ public class DefaultMeasurementMappingService implements
                         nodes = kamStore.getKamNodes(kam, ns, p.getValue());
                     }
                 }
-            } catch (KamStoreException e) {
+            } catch (KAMStoreException e) {
                 logger.warn("{} failed to obtain KAMNodes; ignoring",
                         m.getTerm());
                 continue;
@@ -209,7 +209,7 @@ public class DefaultMeasurementMappingService implements
      * @param kamStore, must not be null
      * @throws InvalidArgument if the given kamStore is null
      */
-    public void setKamStore(KamStore kamStore) throws InvalidArgument {
+    public void setKamStore(KAMStore kamStore) throws InvalidArgument {
         if (kamStore == null) {
             throw new InvalidArgument("kamStore must not be null");
         }
