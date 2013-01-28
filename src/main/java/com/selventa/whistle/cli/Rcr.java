@@ -34,14 +34,18 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.openbel.framework.api.DefaultOrthologize;
 import org.openbel.framework.api.DefaultSpeciesDialect;
 import org.openbel.framework.api.Dialect;
+import org.openbel.framework.api.KAMStore;
+import org.openbel.framework.api.KAMStoreImpl;
 import org.openbel.framework.api.Kam;
 import org.openbel.framework.api.Kam.KamNode;
 import org.openbel.framework.api.KamDialect;
-import org.openbel.framework.api.KamSpecies;
-import org.openbel.framework.api.KAMStore;
-import org.openbel.framework.api.KAMStoreImpl;
+import org.openbel.framework.api.Orthologize;
+import org.openbel.framework.api.SpeciesDialect;
+import org.openbel.framework.api.internal.KAMCatalogDao.KamInfo;
+import org.openbel.framework.api.internal.KAMStoreDaoImpl.BelTerm;
 import org.openbel.framework.common.bel.parser.BELParser;
 import org.openbel.framework.common.cfg.SystemConfiguration;
 import org.openbel.framework.common.model.Namespace;
@@ -55,7 +59,6 @@ import org.openbel.framework.core.df.cache.CacheableResourceService;
 import org.openbel.framework.core.df.cache.DefaultCacheableResourceService;
 import org.openbel.framework.core.df.cache.ResolvedResource;
 import org.openbel.framework.core.df.cache.ResourceType;
-import org.openbel.framework.api.internal.KAMStoreDaoImpl.BelTerm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -454,11 +457,15 @@ public class Rcr {
 
             logger.debug("Collapsing KAM '{}' to tax id {}.", kamName,
                     String.valueOf(speciesTaxId));
+            // load kam
             kam = kamStore.getKam(kamName);
-            kam = new KamSpecies(new KamDialect(kam, dialect),
-                new DefaultSpeciesDialect(
-                kam.getKamInfo(), kamStore, speciesTaxId, false),
-                kamStore);
+            KamInfo info = kam.getKamInfo();
+            
+            // orthologize
+            Orthologize ortho = new DefaultOrthologize();
+            int tax = Integer.valueOf(taxId);
+            SpeciesDialect sd = new DefaultSpeciesDialect(info, kamStore, tax, true);
+            kam = ortho.orthologize(kam, kamStore, sd);
         } else {
             kam = new KamDialect(kamStore.getKam(kamName), dialect);
         }
@@ -1008,12 +1015,18 @@ public class Rcr {
                 List<BelTerm> terms = kamStore.getSupportingTerms(kamNode);
                 if (!terms.isEmpty()) {
                     BelTerm bt = terms.get(0);
-                    Term t = BELParser.parseTerm(bt.getLabel());
+                    String termLabel = bt.getLabel();
+                    
+                    // XXX temp hack to avoid bel parser issues
+                    termLabel = termLabel.replace("(MGI:a)", "(MGI:\"a\")");
+                    termLabel = termLabel.replace("(HGNC:SET)", "(HGNC:\"SET\")");
+                    
+                    Term t = BELParser.parseTerm(termLabel);
                     label = t.toBELShortForm();
                 }
             } catch (Exception e) {
-                throw new RuntimeException(
-                        "Failed to retrieve label for kamNode", e);
+                String msg = "Invalid terms for kam node %d.";
+                throw new RuntimeException(format(msg, kamNode.getId()), e);
             }
             return label;
         }
