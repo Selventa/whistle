@@ -3,6 +3,11 @@ whistle
 
 Whistle is an implementation of the Reverse Causal Reasoning (RCR) algorithm on the `OpenBEL`_ platform.
 
+Downloading
+-----------
+
+Prebuilt distributions are `available for download`_.
+
 Building
 --------
 
@@ -47,3 +52,4 @@ For additional information on running Whistle, please refer to the `Wiki`_.
 .. _OpenBEL: https://github.com/OpenBEL
 .. _Apache Maven: http://maven.apache.org
 .. _Wiki: https://github.com/Selventa/whistle/wiki
+.. _available for download: https://github.com/Selventa/whistle/downloads
