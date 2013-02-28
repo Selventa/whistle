@@ -52,4 +52,4 @@ For additional information on running Whistle, please refer to the `Wiki`_.
 .. _OpenBEL: https://github.com/OpenBEL
 .. _Apache Maven: http://maven.apache.org
 .. _Wiki: https://github.com/Selventa/whistle/wiki
-.. _available for download: https://github.com/Selventa/whistle/downloads
+.. _available for download: http://download.selventa.com/index.html
