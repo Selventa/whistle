@@ -1,7 +1,7 @@
 whistle
 =======
 
-Whistle is an implementation of the Reverse Causal Reasoning (RCR) algorithm on the `OpenBEL`_ platform. A detailed description and use examples can be found in the accompanying paper - http://www.biomedcentral.com/1471-2105/14/340
+Whistle is an implementation of the Reverse Causal Reasoning (RCR) algorithm on the `OpenBEL`_ platform. A detailed description and use examples can be found in the accompanying paper - http://www.biomedcentral.com/1471-2105/14/340.
 
 Downloading
 -----------
