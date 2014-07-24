@@ -7,4 +7,4 @@ if not defined JAVA_OPTS (
 )
 
 set WHISTLE_HOME=%~dp0
-java %JAVA_OPTS% -jar %WHISTLE_HOME%\whistle-${project.version}.jar %*
+java %JAVA_OPTS% -jar "%WHISTLE_HOME%\whistle-${project.version}.jar" %*
